@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 
 type Data = {
-  location: string | undefined;
+  location?: string;
   error?: string;
 };
 
@@ -10,7 +10,8 @@ export default function handler(
   res: NextApiResponse<Data>
 ) {
   if (req.method === "POST" && req.body.code === process.env.SECRET_CODE) {
-    res.status(200).json({ location: process.env.SECRET_LOCATION });
+    return res.status(200).json({ location: process.env.SECRET_LOCATION });
   }
-  res.status(500).json({ location: undefined, error: "Invalid code" });
+  console.error(req.body.code);
+  return res.status(500).json({ error: "Wrong phrase matey!" });
 }
